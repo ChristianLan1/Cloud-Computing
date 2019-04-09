@@ -1,0 +1,41 @@
+Top 5 hashtags for each Grid boxes:
+A1 [('#judo', 7), ('#bbau', 6), ('#vobis', 5), ('#melbourne', 5), ('#tattooist…', 4), ('#worldjudo2014', 3), ('#tattoo…', 3), ('#png', 3), ('#vicfires', 3), ('#vicsired', 3)]
+
+A2 [('#krazykristmas', 165), ('#egsholidaygiveaway', 57), ('#rcl1milliongiveaway', 53), ('#vdaywithbeth', 37), ('#egholidaygiveaway', 31)]
+
+A3 [('#vicfires', 19), ('#epping.', 11), ('#saveconstantine', 8), ('#southmorang.', 7), ('#raw', 6)]
+
+A4 [('#lnp', 4), ('#vicfires', 3), ('#qldvotes', 2), ('#commgames', 1), ('#jaffles.', 1), ('#labiam', 1), ('#fromwhereiride', 1), ('#win', 1), ('#icebucketchallenge', 1), ('#steamtrain', 1), ('#', 1), ('#victoria…', 1), ('#do', 1), ('#paddocktoplate', 1), ('#vicvotes', 1), ('#fisher.', 1), ('#vce', 1), ('#cycling', 1), ('#sbs가요대전', 1), ('#kriskringle', 1), ('#incident,', 1), ('#fringies', 1), ('#craftbeer.', 1), ('#qldelection?', 1), ('#ausopen?', 1), ('#auspol', 1), ('#libspill', 1), ('#lnp,', 1), ('#labour', 1), ('#win!', 1), ('#goingdownswinging', 1), ('#whitenightmelb', 1), ('#speedy', 1), ('#bachiewood', 1), ('#healing', 1), ('#banter💯', 1), ('#hurstbridge', 1), ('#lovinglifeinaus…', 1), ('#market', 1), ('#inclusion…', 1), ('#acceptance…', 1)]
+
+B1 [('#', 65), ('#melbourne', 60), ('#kca', 57), ('#stalbans.', 30), ('#vote5sos', 25)]
+
+B2 [('#melbourne', 244), ('#auspol', 87), ('#melbourne…', 74), ('#australia', 55), ('#reading', 48)]
+
+B3 [('#melbourne', 54), ('#pocus', 46), ('#mtvhottest', 32), ('#australia', 30), ('#preston.', 23), ('#endorphins', 23)]
+
+B4 [('#smallzywelcomeshome5sos', 26), ('#vicfires', 19), ('#socialmedia', 13), ('#melbourne', 12), ('#vic', 11), ('#tcmarcia', 11)]
+
+C1 [('#lifeofnash', 43), ('#3daysforexpelledmovie', 40), ('#askbeau\ntweet', 33), ('#lfc', 25), ('#thankyou1dproject', 24)]
+
+C2 [('#melbourne', 4870), ('#jobs', 770), ('#melbourne…', 486), ('#australia', 478), ('#hiring', 414)]
+
+C3 [('#melbourne', 153), ('#supernatural', 56), ('#australia', 49), ('#auspol', 47), ('#jobs', 46)]
+
+C4 [('#alishas1million', 96), ('#incident,', 39), ('#auspol', 36), ('#savedallas', 36), ('#kca', 36), ('#melbourne', 25), ('#ff', 23), ('#hiring', 23)]
+
+C5 [('#melbourne', 16), ('#melbourne…', 5), ('#nature', 4), ('#dandenongs', 4), ('#vscocam', 4), ('#tesselaartulipfestival', 4), ('#tulips', 3), ('#spring…', 3), ('#belgrave', 3), ('#spring', 3), ('#qanda', 3), ('#green14', 3), ('#notbeachroad', 3), ('#1000steps', 3), ('#wymtm', 3), ('#nature…', 3), ('#puffingbilly', 3), ('#olinda', 3), ('#askcourtneyact', 3), ('#summer', 3), ('#kilsyth.', 2), ('#farmlife', 2), ('#fehbotb', 2), ('#beautiful', 2), ('#throwback', 2), ('#asktroye', 2), ('#bbau', 2), ('#catbbau', 2), ('#ddos', 2), ('#winning', 2), ('#smurf', 2), ('#brunch', 2), ('#7', 2), ('#travel', 2), ('#trees', 2), ('#instagram…', 2), ('#australia', 2), ('#dandenongranges.', 2), ('#thingiverse', 2), ('#thewall', 2), ('#dandenongs!', 2), ('#melbourneiloveyou…', 2), ('#sassafras', 2), ('#morning…', 2), ('#followchanwonto', 2), ('#stayfocused', 2), ('#picoftheday…', 2), ('#montrose…', 2), ('#beautifullandscape…', 2)]
+
+D3 [('#melbourne', 29), ('#followmenash', 21), ('#intense5sosattack', 19), ('#cheltenham.', 17), ('#joesuggtofollowconniekirk', 12)]
+
+D4 [('#nowplaying', 1730), ('#dandenong.', 27), ('#jobs', 22), ('#smallzyvampsfirsttix', 20), ('#smallzypresentsthevamps', 19)]
+
+D5 [('#somebodytocon', 23), ('#voteukvampettes', 18), ('#endorphins', 11), ('#missingcat…', 9), ('#camsfoilowingspree', 8), ('#musicalmashup', 8), ('#vic', 8)]
+
+Ranking of the Grid boxes based on tweet posts:
+[['C2', 145096], ['B2', 79633], ['C3', 53299], ['B3', 26550], ['C4', 19699], ['B1', 16507], ['D4', 14497], ['D3', 13388], ['C1', 8415], ['B4', 5450], ['A3', 5036], ['A2', 4165], ['C5', 4105], ['D5', 3248], ['A1', 2533], ['A4', 310]]
+
+Total running time: 207.710058927536  s
+
+real	3m28.382s
+user	3m25.445s
+sys	0m2.711s
