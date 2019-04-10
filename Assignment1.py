@@ -4,18 +4,18 @@ import numpy as np
 import collections
 import time
 start_time = time.time()
-#initialize mpi 
+
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
+"""Part 1:
+    Every process parse the data from the melbGrid file. store the grid data into a dictionary which has
+    each grid cell's ID and their range of coordinates."""
 #data = []
-"""This part parse the grid data into a dictionary which has a range of coordinates for each gridID"""
 #gridFile = 'C:/Users/Christian Lan/OneDrive/COMP90024 Clust and Cloud Computing/Assignment1/melbGrid.json'
 gridFile = '/data/projects/COMP90024/melbGrid.json'
 with open(gridFile) as f:
-    #for line in f:
-     #  data.append(json.loads(line))
-#jsonData =open('C:/Users/Christian Lan/Desktop/COMP90024 Clust and Cloud Computing/Assignment1/tinyTwitter.json','rU','utf-8')
+   
     data = json.load(f)
 
 
@@ -35,37 +35,43 @@ for features in data["features"]:
 
 
 
-#Initilize two lists to store json data, and count is used for testing the first line
+"""Part 2: 
+    Parallel parse the bigTwitter file by reading each line. If the current line belongs to current rank,
+    parse the data and then store the coordinates and hashtage of each tweet. Then append them into a list"""
 coordData = []
 count = 0
+
+
 tweetData = []
 
 #tweetFile = 'C:/Users/Christian Lan/OneDrive/COMP90024 Clust and Cloud Computing/Assignment1/Untitled-1.json'
 tweetFile = '/data/projects/COMP90024/bigTwitter.json'
 
-"""only master node parse the coordinates from each tweet data. Store the first line and for each line add them
-    together and also add ']}' at the end so that for each line the format of json keep consistent"""
-if rank ==0:
-    with open(tweetFile,'r', encoding='UTF-8') as g:
+with open(tweetFile,'r', encoding='UTF-8') as g:
+    
+    for line in g:
+        count += 1
+        if count ==1:
+            firstLine = line
+        elif line.startswith("]}"):
+    
+            continue
         
-        for line in g:
-            count += 1
-            if count ==1:
-                firstLine = line
-            elif line.startswith("]}"):
-        
-                continue
-            
+        else:
+            if size > 1:
+                dontSkip = False
             else:
-                #If a line not endswith ,\n, this means the current line is last json data. 
-                #Same parse method but with different endings to keep the data type consistent
+                dontSkip = True
+            if rank == (count+1)%size or dontSkip:
+
                 if not line.endswith(",\n"):
-                    
+                    #print ""
+                    #print(" ", line)
                     coordData = json.loads(firstLine+line+"]}")
                     for row in coordData["rows"]:
-                        
+                        #for big [doc][coordinates][coordinates]
                         tweetDict = {}
-                        #Here checking if a tweet missing coordinates for both fields, if so, skip the line
+                        #singleCoord = row["doc"]["coordinates"]["coordinates"]
                         if row["doc"]["coordinates"]:
                             singleCoord = row["doc"]["coordinates"]["coordinates"]
                         else:
@@ -74,7 +80,7 @@ if rank ==0:
                                 singleCoord = reverseCoord.reverse()
                             else:
                                 continue
-                        #singleCoord = row["value"]["geometry"]["coordinates"] This format is testing for tiny data set
+                        #singleCoord = row["value"]["geometry"]["coordinates"]
                         tweetDict["coord"] = singleCoord
 
 
@@ -86,11 +92,12 @@ if rank ==0:
                             
                                 tweetDict["hashtag"] = hashtag.lower()
                         tweetData.append(tweetDict)
-                   
+                        #print(rawText)
+                    #print singleCoord
                     
                     continue
                     
-                #This part doing the regular parse job
+
                 coordData = json.loads(firstLine+line[0:len(line)-2]+"]}")
                 for row in coordData["rows"]:
                     tweetDict = {}
@@ -114,28 +121,15 @@ if rank ==0:
                     tweetData.append(tweetDict)
 
             
-    #If running in more than one core or nodes, split data into sub-arrays by # of nodes
-    if size>1:
-        segmentData = np.array_split(tweetData,size)
-    #print("rank",rank)
-    #print("size",size)
-else:
-    segmentData = None
-#If parallize tasks, scatter the data 
-if size >1:
-    parallelData = comm.scatter(segmentData,root = 0)
-else:
-    parallelData = tweetData
 
                 
-#print("paralleData",parallelData)
-
+"""Parallel calculate that the cell of the posts belong to and store the number of posts and hastages for this grid cell"""
+parallelData = tweetData
 
 
 gridCount = {}
 
-"""Doing the calculation for each coord. Count the number of posts for each grid cell and 
-    storing the hastags for each grid"""
+
 for coord in parallelData:
     appendCoord = False
     
@@ -173,14 +167,14 @@ for coord in parallelData:
 
 
                     
-                
+"""Part3:
+    Master node gather the data from all the process and rank the data
+    Since the results from other rank is a list. First parse the list and get the ideal 
+    dictionary datatype from it then process the data.
+"""                
 gatheredGridData = {}
 gridCount = comm.gather(gridCount,root=0)
-#gatheredGridData = comm.gather(gridCount,root=0)
-#print("gridCount after Gather",gridCount)
-#print(gridCount)
-#print("")
-"""After gathering the data from differnt rank, the master node calculate the results"""
+
 if rank == 0:
     for result in gridCount:
         for grid in gridData:
@@ -214,7 +208,7 @@ if rank == 0:
                                 gatheredGridData[grid["gridId"]]["hashtags"] += (result[grid["gridId"]]["hashtags"])
     #print(gatheredGridData) 
 
-"""ranking the grid boxes and generating the results"""
+
     postRankingList = []
     print("Top 5 hashtags for each Grid boxes:")
     for grid in gridData:
