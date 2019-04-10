@@ -1,19 +1,23 @@
 import json
 from mpi4py import MPI
-import numpy as np
 import collections
 import time
 start_time = time.time()
 
+#Initilizing Communicator 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
+
 """Part 1:
     Every process parse the data from the melbGrid file. store the grid data into a dictionary which has
     each grid cell's ID and their range of coordinates."""
-#data = []
+
+#Two paths because one is used for HPC and the other one is used for local testing
+
 #gridFile = 'C:/Users/Christian Lan/OneDrive/COMP90024 Clust and Cloud Computing/Assignment1/melbGrid.json'
 gridFile = '/data/projects/COMP90024/melbGrid.json'
+
 with open(gridFile) as f:
    
     data = json.load(f)
@@ -21,6 +25,7 @@ with open(gridFile) as f:
 
 gridData = []
 
+#Get ID and coordinates range from features field.
 for features in data["features"]:
     girdDict = {}
     girdDict["gridId"] = features["properties"]["id"]
@@ -29,7 +34,7 @@ for features in data["features"]:
     girdDict["ymin"] = features["properties"]["ymin"]
     girdDict["ymax"] = features["properties"]["ymax"]
     gridData.append(girdDict)
-#print gridData
+
 
 
 
@@ -52,21 +57,28 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
     for line in g:
         count += 1
         if count ==1:
+            #Store the first line in order to consturct a valid json format
             firstLine = line
         elif line.startswith("]}"):
-    
+            #Skip the last line
             continue
         
         else:
+            #Initilizing a swtich which makes sure that the program can run under two cases:
+            # 1 multi-process
+            # 2 single process
+            
             if size > 1:
                 dontSkip = False
             else:
                 dontSkip = True
+            # If there are more process, each process read their own line. If there are just one process, read from the begining to the end
             if rank == (count+1)%size or dontSkip:
 
+                #If a line not ends with ",\n" means that it is the second last line. 
+
                 if not line.endswith(",\n"):
-                    #print ""
-                    #print(" ", line)
+                    
                     coordData = json.loads(firstLine+line+"]}")
                     for row in coordData["rows"]:
                         #for big [doc][coordinates][coordinates]
@@ -97,21 +109,25 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                     
                     continue
                     
-
+                #Process the each line 
                 coordData = json.loads(firstLine+line[0:len(line)-2]+"]}")
                 for row in coordData["rows"]:
                     tweetDict = {}
                     if row["doc"]["coordinates"]:
+                        #Get the coordinates of the post
                         singleCoord = row["doc"]["coordinates"]["coordinates"]
                     else:
+                        #If the coordinates from the geo field, reverse the data because this filed has reversed data
                         if row["doc"]["geo"]:
                             reverseCoord = row["doc"]["geo"]["coordinates"]
                             singleCoord = reverseCoord.reverse()
                         else:
                             continue
-                    
+                    #Store the coordinates into the dictionary
                     tweetDict["coord"] = singleCoord
-
+                    
+                    #Getting the hashtag from text field 
+                    #By not using the regex, use split() to match the parttern of " #String "
                     rawText = row["doc"]["text"]
                     hastags = rawText.split(" ")[1:-1]
                     for hashtag in hastags:
@@ -131,14 +147,17 @@ gridCount = {}
 
 
 for coord in parallelData:
-    appendCoord = False
+    
     
     for grid in gridData:
-        #print grid
+      
+        #For each post, check if the post belongs to the grid cell one by one.
+        # If the posts at boundary, move to left-top 
         if coord["coord"][0] > grid["xmin"] and coord["coord"][0] <= grid["xmax"]:
             if coord["coord"][1] >= grid["ymin"] and coord["coord"][1] < grid["ymax"]:
                 gridHashData = []
                 gridHash = {}
+                #Initilizing the dictionary key and store the value of count and hastag for each cell
                 if grid["gridId"] not in gridCount:
                     gridCount[grid["gridId"]] = {}
                     if "count" not in gridCount[grid["gridId"]]:
@@ -176,9 +195,12 @@ gatheredGridData = {}
 gridCount = comm.gather(gridCount,root=0)
 
 if rank == 0:
+    #Getting the dictionary type from the list
     for result in gridCount:
+
         for grid in gridData:
             if grid["gridId"] in result:
+                #If the ID appeared for the first time, initilize the key with value for both count and hastags
                 if grid["gridId"] not in gatheredGridData:
                     gatheredGridData[grid["gridId"]] = {}
 
@@ -200,7 +222,7 @@ if rank == 0:
                     else:
                         gatheredGridData[grid["gridId"]]["count"] += result[grid["gridId"]]["count"]
                     if "hashtags" in result[grid["gridId"]]:
-                            #print("lol")
+                            
                             if "hashtags" not in gatheredGridData[grid["gridId"]]:
                                 
                                 gatheredGridData[grid["gridId"]]["hashtags"] =  result[grid["gridId"]]["hashtags"]
@@ -212,16 +234,16 @@ if rank == 0:
     postRankingList = []
     print("Top 5 hashtags for each Grid boxes:")
     for grid in gridData:
-        #print(grid["gridId"])
-        #print(gridCount)
+        
         if grid["gridId"] in gatheredGridData:
-            #print("testing1")
             
             
+            #Rank the top hashtags for each cell by Counter.mostcommon
+            #After sorted, compare each hastag from the begining, if there is a tie, count them both as the top5
             if "hashtags" in gatheredGridData[grid["gridId"]]:
-                #print("testing")
+                
                 rankings = collections.Counter(gatheredGridData[grid["gridId"]]["hashtags"]).most_common()
-                #print(len(rankings))
+                
                 count = 0
                 result = []
                 if len(rankings) ==1:
@@ -242,31 +264,24 @@ if rank == 0:
 
             
                 print(grid["gridId"],result)
-                #print(len(result))
+                
                 print("")
-                #print("")
+                
                 postRankingList.append([grid["gridId"],gatheredGridData[grid["gridId"]]["count"]])
-                #print(postRankingList)
-                #print(gridCount)
+                
             
 
-    """for cellData in gridCount:
-        for grid in gridData:
-            if cellData[grid["gridId"]]["count"] >"""
-
+   
+   
+    #Sort the list by number of posts and print
     rankedList = sorted(postRankingList, key = lambda x: x[1], reverse = True  )
     print("Ranking of the Grid boxes based on tweet posts:")
     print(rankedList)
     print("")
     totalTime = time.time() - start_time
     print("Total running time:",totalTime," s")
-    #print(tweetData)
-    #print(sorted(gridCount[grid["gridId"]]["count"] for grid in gridData if grid["gridId"] in gridCount))
-                    
-
+    
             
                 
 
-        #print"Final", coordData
-            #print coordData["value"]["geometry"]["coordinates"]
-            #print coordData["doc"]["entities"]["hashtags"]
+       
