@@ -234,10 +234,7 @@ if rank == 0:
     postRankingList = []
     hashtagRankingList = []
     for grid in gridData:
-        
-        if grid["gridId"] in gatheredGridData:
-            
-            
+        if grid["gridId"] in gatheredGridData:           
             #Rank the top hashtags for each cell by Counter.mostcommon
             #After sorted, compare each hastag from the begining, if there is a tie, count them both as the top5
             if "hashtags" in gatheredGridData[grid["gridId"]]:
@@ -263,17 +260,12 @@ if rank == 0:
                 rankingDict[grid["gridId"]] = result
                 hashtagRankingList.append(rankingDict)                
                 postRankingList.append([grid["gridId"],gatheredGridData[grid["gridId"]]["count"]])
-                
-            
-
-   
-   
+              
     #Sort the list by number of posts and print
     rankedList = sorted(postRankingList, key = lambda x: x[1], reverse = True  )
     print("Ranking of the Grid boxes based on tweet posts:")
     print(rankedList)
     print("")
-
     print("Top 5 hashtags for each Grid boxes:")
     for rankedCell in rankedList:
         for rankedHashtagCell in hashtagRankingList:
