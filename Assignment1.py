@@ -237,10 +237,8 @@ if rank == 0:
         if grid["gridId"] in gatheredGridData:           
             #Rank the top hashtags for each cell by Counter.mostcommon
             #After sorted, compare each hastag from the begining, if there is a tie, count them both as the top5
-            if "hashtags" in gatheredGridData[grid["gridId"]]:
-                
-                rankings = collections.Counter(gatheredGridData[grid["gridId"]]["hashtags"]).most_common()
-                
+            if "hashtags" in gatheredGridData[grid["gridId"]]:          
+                rankings = collections.Counter(gatheredGridData[grid["gridId"]]["hashtags"]).most_common()    
                 count = 0
                 result = []
                 rankingDict = {}
@@ -256,7 +254,6 @@ if rank == 0:
                                 count +=1
                             else:
                                 result.append(rankings[i])
-
                 rankingDict[grid["gridId"]] = result
                 hashtagRankingList.append(rankingDict)                
                 postRankingList.append([grid["gridId"],gatheredGridData[grid["gridId"]]["count"]])
