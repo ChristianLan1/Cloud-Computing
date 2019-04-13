@@ -104,11 +104,7 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                             if hashtag.startswith("#"):
                                 hashtagList.append(hashtag.lower())
                                 tweetDict["hashtag"] = hashtagList
-                                """if "hashtag" in tweetData:
-                                    tweetDict["hashtag"] += hashtagList
-                                else:
-                                    tweetDict["hashtag"] = hashtagList"""
-                               
+                                                               
                         tweetData.append(tweetDict)
                     
                     continue
@@ -139,11 +135,7 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                         if hashtag.startswith("#"):
                             hashtagList.append(hashtag.lower())
                             tweetDict["hashtag"] = hashtagList
-                            """if "hashtag" in tweetData:
-                                tweetDict["hashtag"] += hashtagList
-                            else:
-                                tweetDict["hashtag"] = hashtagList"""
-               
+                                           
                     tweetData.append(tweetDict)
                 
 """Parallel calculate that the cell of the posts belong to and store the number of posts and hastages for this grid cell"""
