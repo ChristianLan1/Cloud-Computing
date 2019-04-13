@@ -1,0 +1,41 @@
+Ranking of the Grid boxes based on tweet posts:
+[['C2', 145096], ['B2', 79633], ['C3', 53299], ['B3', 26550], ['C4', 19699], ['B1', 16507], ['D4', 14497], ['D3', 13388], ['C1', 8415], ['B4', 5450], ['A3', 5036], ['A2', 4165], ['C5', 4105], ['D5', 3248], ['A1', 2533], ['A4', 310]]
+
+Top 5 hashtags for each Grid boxes:
+C2 [('#melbourne', 9777), ('#australia', 1501), ('#job', 1388), ('#jobs', 964), ('#job:', 501)]
+
+B2 [('#melbourne', 813), ('#australia', 153), ('#auspol', 131), ('#nashsnewvideo', 123), ('#brunswick', 93)]
+
+C3 [('#melbourne', 466), ('#australia', 141), ('#coffee', 100), ('#oneorigin_specialtycoffee', 71), ('#food', 67)]
+
+B3 [('#melbourne', 159), ('#australia', 60), ('#fitness', 54), ('#pocus', 50), ('#britonedirection', 42)]
+
+C4 [('#alishas1million', 96), ('#melbourne', 80), ('#auspol', 49), ('#savedallas', 46), ('#kca', 43)]
+
+B1 [('#melbourne', 170), ('#', 120), ('#kca', 69), ('#australia', 56), ('#vote5sos', 55)]
+
+D4 [('#nowplaying', 1730), ('#melbourne', 28), ('#dandenong.', 27), ('#job', 26), ('#jobs', 22)]
+
+D3 [('#melbourne', 76), ('#beach', 57), ('#joesuggtofollowconniekirk', 28), ('#summer', 26), ('#australia', 23)]
+
+C1 [('#jackdm', 90), ('#mashnewvideo', 57), ('#melbourne', 50), ('#lifeofnash', 43), ('#3daysforexpelledmovie', 40)]
+
+B4 [('#melbourne', 32), ('#smallzywelcomeshome5sos', 26), ('#fire', 19), ('#vicfires', 19), ('#socialmedia', 18), ('#warrandyte', 14)]
+
+A3 [('#vicfires', 19), ('#saveconstantine', 12), ('#epping.', 11), ('#raw', 7), ('#love', 7), ('#southmorang.', 7), ('#mvfc', 7), ('#socceroos', 6)]
+
+A2 [('#krazykristmas', 165), ('#egsholidaygiveaway', 57), ('#rcl1milliongiveaway', 53), ('#vdaywithbeth', 37), ('#craigieburn.', 31), ('#egholidaygiveaway', 31)]
+
+C5 [('#melbourne', 53), ('#australia', 17), ('#dandenongs', 13), ('#1000steps', 11), ('#spring', 10), ('#travel', 10)]
+
+D5 [('#cat,', 25), ('#somebodytocon', 23), ('#melbourne', 22), ('#lost', 20), ('#voteukvampettes', 18)]
+
+A1 [('#melbourne', 11), ('#tattoo', 11), ('#worldjudo2014', 9), ('#judo', 8), ('#vobis', 8), ('#design', 8), ('#drawing', 8), ('#bigbrother', 6), ('#bbau', 6), ('#tattoolife', 6), ('#life', 5), ('#tattooist', 5)]
+
+A4 [('#lnp', 4), ('#qldvotes', 3), ('#vicfires', 3), ('#birthday', 3), ('#market', 2), ('#community', 2), ('#mytribe', 2), ('#joy', 2), ('#laughterclass', 2), ('#commgames', 1), ('#jaffles.', 1), ('#labswim', 1), ('#labwet', 1), ('#labfun', 1), ('#labiam', 1), ('#fromwhereiride', 1), ('#win', 1), ('#icebucketchallenge', 1), ('#herbalife', 1), ('#loseweight', 1), ('#steamtrain', 1), ('#comon', 1), ('#ball', 1), ('#fast', 1), ('#high', 1), ('#intensity', 1), ('#', 1), ('#vsco', 1), ('#igers', 1), ('#igersdaily', 1), ('#igersmelbourne', 1), ('#victoria…', 1), ('#hawthorn', 1), ('#always', 1), ('#do', 1), ('#standrews', 1), ('#getaway', 1), ('#paddocktoplate', 1), ('#vicvotes', 1), ('#fisher.', 1), ('#classof2014', 1), ('#vce', 1), ('#cycling', 1), ('#sbs가요대전', 1), ('#smashit', 1), ('#kriskringle', 1), ('#incident,', 1), ('#fringies', 1), ('#craftbeer.', 1), ('#qldelection?', 1), ('#screecher', 1), ('#ausopen?', 1), ('#socceroos,watch', 1), ('#auspol', 1), ('#libspill', 1), ('#lnp,', 1), ('#labour', 1), ('#win!', 1), ('#goingdownswinging', 1), ('#whitenightmelb', 1), ('#good', 1), ('#operation', 1), ('#speedy', 1), ('#bachiewood', 1), ('#guitar', 1), ('#buskin', 1), ('#melbourne', 1), ('#healing', 1), ('#🚴🏻💥', 1), ('#earlyaf', 1), ('#banter💯', 1), ('#hurstbridge', 1), ('#jan1st', 1), ('#wellspent', 1), ('#lovinglifeinaus…', 1), ('#happiness', 1), ('#inclusion…', 1), ('#inclusion', 1), ('#diversity', 1), ('#acceptance…', 1), ('#winter', 1), ('#ilovewinter', 1), ('#rainyevening', 1), ('#australia', 1), ('#australianbush', 1), ('#nature', 1)]
+
+Total running time: 217.53281092643738  s
+
+real	3m38.055s
+user	3m34.324s
+sys	0m3.549s

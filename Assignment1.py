@@ -83,6 +83,7 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                     for row in coordData["rows"]:
                         #for big [doc][coordinates][coordinates]
                         tweetDict = {}
+                        hastagList = []
                         #singleCoord = row["doc"]["coordinates"]["coordinates"]
                         if row["doc"]["coordinates"]:
                             singleCoord = row["doc"]["coordinates"]["coordinates"]
@@ -101,11 +102,14 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                         hastags = rawText.split(" ")[1:-1]
                         for hashtag in hastags:
                             if hashtag.startswith("#"):
-                            
-                                tweetDict["hashtag"] = hashtag.lower()
+                                hashtagList.append(hashtag.lower())
+                                tweetDict["hashtag"] = hashtagList
+                                """if "hashtag" in tweetData:
+                                    tweetDict["hashtag"] += hashtagList
+                                else:
+                                    tweetDict["hashtag"] = hashtagList"""
+                               
                         tweetData.append(tweetDict)
-                        #print(rawText)
-                    #print singleCoord
                     
                     continue
                     
@@ -113,6 +117,7 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                 coordData = json.loads(firstLine+line[0:len(line)-2]+"]}")
                 for row in coordData["rows"]:
                     tweetDict = {}
+                    hashtagList = []
                     if row["doc"]["coordinates"]:
                         #Get the coordinates of the post
                         singleCoord = row["doc"]["coordinates"]["coordinates"]
@@ -132,12 +137,14 @@ with open(tweetFile,'r', encoding='UTF-8') as g:
                     hastags = rawText.split(" ")[1:-1]
                     for hashtag in hastags:
                         if hashtag.startswith("#"):
-                            
-                            tweetDict["hashtag"] = hashtag.lower()
+                            hashtagList.append(hashtag.lower())
+                            tweetDict["hashtag"] = hashtagList
+                            """if "hashtag" in tweetData:
+                                tweetDict["hashtag"] += hashtagList
+                            else:
+                                tweetDict["hashtag"] = hashtagList"""
+               
                     tweetData.append(tweetDict)
-
-            
-
                 
 """Parallel calculate that the cell of the posts belong to and store the number of posts and hastages for this grid cell"""
 parallelData = tweetData
@@ -168,9 +175,9 @@ for coord in parallelData:
                     if "hashtag" in coord:
                         if "hashtags" not in gridCount[grid["gridId"]]:
                             
-                            gridCount[grid["gridId"]]["hashtags"] =  [coord["hashtag"]]
+                            gridCount[grid["gridId"]]["hashtags"] =  coord["hashtag"]
                         else:
-                            gridCount[grid["gridId"]]["hashtags"].append(coord["hashtag"])
+                            gridCount[grid["gridId"]]["hashtags"]+= coord["hashtag"]
                 else:
                     if "count" not in gridCount[grid["gridId"]]:
                         gridCount[grid["gridId"]]["count"] =1
@@ -180,9 +187,9 @@ for coord in parallelData:
                     if "hashtag" in coord:
                         if "hashtags" not in gridCount[grid["gridId"]]:
                             
-                            gridCount[grid["gridId"]]["hashtags"] =  [coord["hashtag"]]
+                            gridCount[grid["gridId"]]["hashtags"] =  coord["hashtag"]
                         else:
-                            gridCount[grid["gridId"]]["hashtags"].append(coord["hashtag"])
+                            gridCount[grid["gridId"]]["hashtags"] += coord["hashtag"]
 
 
                     
@@ -192,7 +199,10 @@ for coord in parallelData:
     dictionary datatype from it then process the data.
 """                
 gatheredGridData = {}
-gridCount = comm.gather(gridCount,root=0)
+if size >1:
+    gridCount = comm.gather(gridCount,root=0)
+else:
+    gridCount = [gridCount]
 
 if rank == 0:
     #Getting the dictionary type from the list
@@ -228,11 +238,9 @@ if rank == 0:
                                 gatheredGridData[grid["gridId"]]["hashtags"] =  result[grid["gridId"]]["hashtags"]
                             else:
                                 gatheredGridData[grid["gridId"]]["hashtags"] += (result[grid["gridId"]]["hashtags"])
-    #print(gatheredGridData) 
-
 
     postRankingList = []
-    print("Top 5 hashtags for each Grid boxes:")
+    hashtagRankingList = []
     for grid in gridData:
         
         if grid["gridId"] in gatheredGridData:
@@ -246,12 +254,11 @@ if rank == 0:
                 
                 count = 0
                 result = []
+                rankingDict = {}
                 if len(rankings) ==1:
                     result.append(rankings[0])
                 else:
                     for i in range(0,len(rankings)-1):
-
-                        #print("haha",rankings[i][1])
                         if count == 5:
                             break
                         else:
@@ -261,12 +268,8 @@ if rank == 0:
                             else:
                                 result.append(rankings[i])
 
-
-            
-                print(grid["gridId"],result)
-                
-                print("")
-                
+                rankingDict[grid["gridId"]] = result
+                hashtagRankingList.append(rankingDict)                
                 postRankingList.append([grid["gridId"],gatheredGridData[grid["gridId"]]["count"]])
                 
             
@@ -278,6 +281,14 @@ if rank == 0:
     print("Ranking of the Grid boxes based on tweet posts:")
     print(rankedList)
     print("")
+
+    print("Top 5 hashtags for each Grid boxes:")
+    for rankedCell in rankedList:
+        for rankedHashtagCell in hashtagRankingList:
+            if rankedCell[0] in rankedHashtagCell:
+                print(rankedCell[0],rankedHashtagCell[rankedCell[0]])
+                print("")
+
     totalTime = time.time() - start_time
     print("Total running time:",totalTime," s")
     
